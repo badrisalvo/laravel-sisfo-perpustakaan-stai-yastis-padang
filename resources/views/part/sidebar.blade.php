@@ -34,6 +34,7 @@
             </div>
         </div>
     </li>
+    @if (Auth::user()->isAdmin == 1)
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm"
             aria-expanded="true" aria-controls="collapseForm">
@@ -44,15 +45,11 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Kategori</h6>
                 <a class="collapse-item" href="/kategori">Lihat Kategori</a>
-
-                @if (Auth::user()->isAdmin == 1)
                     <a class="collapse-item" href="/kategori/create">Tambah Kategori</a>
-                @endif
-
             </div>
         </div>
     </li>
-
+    @endif
     @if (Auth::user()->isAdmin == 1)
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable"
@@ -87,21 +84,21 @@
                 </div>
             </div>
         </li>
-    @endif
-
+        @endif
     @if (Auth::user()->isAdmin == 0)
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePeminjam"
                 aria-expanded="true" aria-controls="collapsePeminjam">
                 <i class="fas fa-fw fa-table"></i>
-                <span><b>Pinjam Buku</b></span>
+                <span><b>Peminjaman</b></span>
             </a>
             <div id="collapsePeminjam" class="collapse" aria-labelledby="headingPeminjam"
                 data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Pinjam Buku</h6>
-                    <a class="collapse-item" href="/peminjaman/create">Pinjam Buku</a>
-                    <a class="collapse-item" href="/peminjaman">Pinjaman Saya</a>
+                    <a class="collapse-item" href="/peminjaman/create">Pinjam Buku Baru</a>
+                    <a class="collapse-item" href="/peminjaman">Riwayat Pinjaman Selesai</a>
+                    <a class="collapse-item" href="/dipinjam">Daftar Buku Belum Dikembalikan</a>
                 </div>
             </div>
         </li>

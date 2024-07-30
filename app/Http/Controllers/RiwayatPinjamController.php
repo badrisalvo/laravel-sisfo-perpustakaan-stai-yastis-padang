@@ -21,32 +21,44 @@ class RiwayatPinjamController extends Controller
      */
     public function index()
     {
-        $iduser = Auth::id();
+        $user = Auth::user();
+        $iduser = $user->id;
         $profile = Profile::where('users_id', $iduser)->first();
-        $peminjam = Peminjaman::with(['user', 'buku'])->orderBy('updated_at', 'desc')->get();
-        $pinjamanUser = Peminjaman::where('users_id', $iduser)->get();
         $denda_perhari = 3000; // Atur nilai denda per hari
-
+    
+        if ($user->isAdmin) {
+            // Admin sees all data
+            $peminjam = Peminjaman::with(['user', 'buku'])->orderBy('updated_at', 'desc')->get();
+        } else {
+            // Regular users only see their own data
+            $peminjam = Peminjaman::with(['user', 'buku'])->where('users_id', $iduser)->orderBy('updated_at', 'desc')->get();
+        }
+    
         return view('peminjaman.tampil', [
             'profile' => $profile,
             'peminjam' => $peminjam,
-            'pinjamanUser' => $pinjamanUser,
             'denda_perhari' => $denda_perhari,
         ]);
     }
 
     public function dipinjam()
     {
-        $iduser = Auth::id();
+        $user = Auth::user();
+        $iduser = $user->id;
         $profile = Profile::where('users_id', $iduser)->first();
-        $peminjam = Peminjaman::with(['user', 'buku'])->orderBy('updated_at', 'desc')->get();
-        $pinjamanUser = Peminjaman::where('users_id', $iduser)->get();
         $denda_perhari = 3000; // Atur nilai denda per hari
-
+    
+        if ($user->isAdmin) {
+            // Admin sees all data
+            $peminjam = Peminjaman::with(['user', 'buku'])->orderBy('updated_at', 'desc')->get();
+        } else {
+            // Regular users only see their own data
+            $peminjam = Peminjaman::with(['user', 'buku'])->where('users_id', $iduser)->orderBy('updated_at', 'desc')->get();
+        }
+    
         return view('peminjaman.dipinjam', [
             'profile' => $profile,
             'peminjam' => $peminjam,
-            'pinjamanUser' => $pinjamanUser,
             'denda_perhari' => $denda_perhari,
         ]);
     }

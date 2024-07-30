@@ -63,6 +63,7 @@
             </form>
         </div>
     </div>
+    @if (Auth::user()->isAdmin == 1)
 </div>
     <div class="col-lg-12">
         <div class="card mb-4">
@@ -132,7 +133,10 @@
                 </table>
             </div>
         </div>
+        @endif
     </div>
+
+    
 
     @if (Auth::user()->isAdmin == 0)
         <div class="col-lg-12">
@@ -149,18 +153,30 @@
                                 <th scope="col">Kode Buku</th>
                                 <th scope="col">Tanggal Pinjam</th>
                                 <th scope="col">Tanggal Wajib Pengembalian</th>
+                                <th scope="col">Denda</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($pinjamanUser as $item)
+                        @php
+                        $no = 1;
+                        @endphp
+                            @forelse ($peminjam as $item)
                                 @if (is_null($item->tanggal_pengembalian))
                                     <tr>
-                                        <th>{{ $loop->iteration }}</th>
+                                        <td>{{ $no++ }}</td>
                                         <td>{{ $item->user->name }}</td>
                                         <td>{{ $item->buku->judul }}</td>
                                         <td>{{ $item->buku->kode_buku }}</td>
                                         <td>{{ $item->tanggal_pinjam }}</td>
                                         <td>{{ $item->tanggal_wajib_kembali }}</td>
+                                        <td>@php
+                                                $tanggalWajibKembali = \Carbon\Carbon::parse($item->tanggal_wajib_kembali);
+                                                $tanggalSekarang = \Carbon\Carbon::now();
+                                                $hariTerlambat = $tanggalWajibKembali->diffInDays($tanggalSekarang, false);
+                                                $denda = $hariTerlambat > 0 ? $hariTerlambat * 3000 : 0;
+                                            @endphp
+                                            {{ $denda > 0 ? 'Rp. ' . number_format($denda, 0, ',', '.') : '-' }}
+                                        </td>
                                     </tr>
                                 @endif
                             @empty

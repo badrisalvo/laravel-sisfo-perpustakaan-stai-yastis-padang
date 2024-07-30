@@ -28,29 +28,29 @@ Route::get('/', function () {
 });
 Auth::routes();
 
-Route::middleware(['auth','isAdmin'])->group(function () {
-
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
-
-    Route::resource('kategori', KategoriController::class);
+Route::middleware(['auth'])->group(function () {
 
     Route::resource('buku', BukuController::class);
-
-    Route::resource('anggota', AnggotaController::class);
-
-    Route::resource('profile', ProfileController::class)->only('index','update','edit');
-
     Route::resource('peminjaman', RiwayatPinjamController::class);
-
-    Route::get('/cetaklaporan', CetakLaporanController::class);
-
-    Route::get('/pengembalian', [PengembalianController::class,'index']);
-
-    Route::post('/pengembalian', [PengembalianController::class,'pengembalian']);
-
+    Route::resource('profile', ProfileController::class)->only('index','update','edit');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
     Route::get('/dipinjam', [RiwayatPinjamController::class, 'dipinjam'])->name('pengembalian.dipinjam');
+});
 
+Route::middleware(['auth','isAdmin'])->group(function () {
+
+    
+
+    Route::resource('kategori', KategoriController::class);
+    Route::resource('anggota', AnggotaController::class);
+    Route::get('/cetaklaporan', CetakLaporanController::class);
+    Route::get('/pengembalian', [PengembalianController::class,'index']);
+    Route::post('/pengembalian', [PengembalianController::class,'pengembalian']);
     Route::post('/peminjaman/tambah-durasi/{id}', [RiwayatPinjamController::class, 'tambahDurasi'])->name('peminjaman.tambahDurasi');
 
 
 });
+
+
+
+

@@ -45,7 +45,9 @@
                             <th scope="col">Pengarang</th>
                             <th scope="col">Kategori</th>
                             <th scope="col">Status</th>
+                            @if (Auth::user()->isAdmin == 1)
                             <th scope="col">Action</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -65,8 +67,9 @@
                                         {{ $item->status == 'In Stock' ? 'Tersedia' : 'Dipinjam' }}
                                     </span>
                                 </td>
+                                @if (Auth::user()->isAdmin == 1)
                                 <td>
-                                    @if (Auth::user()->isAdmin == 1)
+                                    
                                         <div class="button-area">
                                             <button class="btn-sm btn-info px-2">
                                                 <a href="/buku/{{ $item->id }}" style="text-decoration: none; color: white;">Info</a>
@@ -101,9 +104,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endif
                                     </form>
                                 </td>
+                                @endif
                             </tr>
                         @empty
                         @endforelse
